@@ -9,20 +9,26 @@ public class Game {
 			new Wall(25,0,750,25)
 	));
 
-	Player player = new Player();
-	ArrayList<Ball> balls = new ArrayList<Ball>();
-
+	Player player;
 
 
 	public Game(GameBoard board, Dimension dimension) {
-		balls.add(new Ball(dimension.width/2, dimension.height/2, 10, 10));
+		player = new Player(dimension);
+		player.balls.add(new Ball(dimension.width/2, dimension.height/2, 10, 10));
+		player.balls.add(new Ball(dimension.width/2, dimension.height/2, 10, 10));
+		player.balls.add(new Ball(dimension.width/2, dimension.height/2, 10, 10));
+
 	}
 
 	public void update(Keyboard keyboard) {
 		player.bat.update(keyboard);
-
-		for (Ball ball: balls){
+		for (Ball ball: player.balls){
 			ball.update(keyboard);
+			for (Wall wall: walls){
+				ball.collisionCheck(wall.boundingBox);
+			}
+			ball.collisionCheck(player.bat.boundingBox);
+
 		}
 	}
 
@@ -30,8 +36,7 @@ public class Game {
 		for (Wall wall : walls) {
 			wall.draw(graphics);
 		}
-
 		player.bat.draw(graphics);
-		balls.forEach(ball -> ball.draw(graphics));
+		player.balls.forEach(ball -> ball.draw(graphics));
 	}
 }

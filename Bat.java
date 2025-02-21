@@ -3,12 +3,14 @@ import java.awt.*;
 public class Bat extends Wall {
     int speed;
     String name;
+    Rectangle boundingBox;
 
 
     public Bat(int x, int y, int width, int height) {
         super(x, y, width, height);
         this.color = Color.GRAY;
         this.name = "Name";
+        this.boundingBox = new Rectangle(x, y, width, height);
     }
 
 
@@ -21,6 +23,7 @@ public class Bat extends Wall {
     @Override
     public void update(Keyboard keyboard) {
 
+
         if (getX()<=775-getWidth()  && keyboard.isKeyDown(Key.Right)) {
             this.setX(getX()+10);
         }
@@ -29,6 +32,6 @@ public class Bat extends Wall {
             this.setX(getX()-10);
         }
 
-
+        boundingBox.setLocation(getX(), getY());
     }
 }
