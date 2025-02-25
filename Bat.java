@@ -14,10 +14,15 @@ public class Bat extends Wall {
     }
 
 
+    private String getName(){return this.name;}
+
+
     @Override
     public void draw(Graphics2D graphics) {
         graphics.setColor(color);
         graphics.fillRect(getX(), getY(), getWidth(), getHeight());
+        graphics.setColor(Color.white);
+        graphics.drawString(getName(),getX(),(getY()+getHeight()/2));
     }
 
     @Override

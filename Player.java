@@ -12,5 +12,11 @@ public class Player  {
     this.dimension = dimension;
     }
 
+    void drawScore(Graphics graphics){
+        graphics.setColor(Color.white);
+        graphics.drawString("SCORE:"+ this.score,100,50);
+        graphics.drawString("Balls:"+ this.balls.size(),100,75);
+
+    }
 
 }
