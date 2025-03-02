@@ -9,7 +9,7 @@ public class Bat extends Wall {
     public Bat(int x, int y, int width, int height) {
         super(x, y, width, height);
         this.color = Color.GRAY;
-        this.name = "Name";
+        this.name = "D";
         this.boundingBox = new Rectangle(x, y, width, height);
     }
 

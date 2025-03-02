@@ -15,8 +15,7 @@ public class Game {
 
 	public Game(GameBoard board, Dimension dimension) {
 		player = new Player(dimension);
-		player.balls.add(new Ball(dimension.width/2, dimension.height/2, 10, 10));
-		player.balls.add(new Ball(dimension.width/2, dimension.height/2, 10, 10));
+		player.SpawnBalls(6);
 
 		int brickBoundery = (int)(dimension.getWidth()/3);
 		int brickAndSpaceWidth=brickBoundery/4;

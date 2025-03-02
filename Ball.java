@@ -5,29 +5,25 @@ import java.util.Random;
 
 
 public class Ball extends Sprite {
-
-    int xDir, yDir;
-    int speed = 4;
-    int size =10;
-    void move(int speed, int xDir, int yDir) {
-        setX(getX()+(xDir*speed));
-        setY(getY()+(yDir*speed));
+    int xVelocity;
+    int yVelocity;
+    void move(int xVelocity, int yVelocity) {
+        setX(getX()+(xVelocity));
+        setY(getY()+(yVelocity));
         updateBoundingBoxPosition();
     }
 
 
-    public Ball(int x, int y, int width, int height) {
-        super(x, y, width, height);
-        Random rand = new Random();
-        xDir = rand.nextBoolean() ? -1 : 1;
-        yDir = rand.nextBoolean() ? -1 : 1;
+    public Ball(int x, int y, int xVelocity, int  yVelocity) {
+        super(x, y, 10, 10);
+        this.xVelocity =xVelocity;
+        this.yVelocity =yVelocity;
     }
 
 
+
     boolean outOfBounds(){
-        if (getY() >= 600){
-            return true;}
-        return false;
+        return getY() >= 600;
     }
 
     public boolean collisionCheck(Rectangle otherBoundingBox) {
@@ -41,10 +37,9 @@ public class Ball extends Sprite {
             boolean fromTop = collbox.width > collbox.height && this.boundingBox.getY() < otherBoundingBox.getY();
             boolean fromBottom = collbox.width > collbox.height && this.boundingBox.getY() > otherBoundingBox.getY();
 
-            if (fromLeft) this.xDir = -xDir;
-            if (fromRight) this.xDir = -xDir;
-            if (fromTop) this.yDir = -yDir;
-            if (fromBottom) this.yDir = -yDir;
+            if (fromLeft || fromRight) this.xVelocity = xVelocity*-1;
+            if (fromTop || fromBottom) this.yVelocity = yVelocity*-1;
+
 
             return true;
         }
@@ -54,8 +49,7 @@ public class Ball extends Sprite {
 
     @Override
     public void update(Keyboard keyboard) {
-        move(speed, xDir, yDir);
-
+        move(xVelocity,yVelocity);
     }
 
     @Override
