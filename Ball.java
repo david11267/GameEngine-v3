@@ -21,15 +21,14 @@ public class Ball extends Sprite {
     }
 
 
-
     boolean outOfBounds(){
-        return getY() >= 600;
+        //change this to be adjusted by Dimension class
+        return (getY() >= 600||getY() <= 0||getX() >= 800||getX() <= 0);
     }
 
     public boolean collisionCheck(Rectangle otherBoundingBox) {
 
         if (otherBoundingBox.intersects(this.boundingBox)) {
-            System.out.println("Collision Detected");
             Rectangle collbox = otherBoundingBox.intersection(this.boundingBox);
 
             boolean fromLeft = collbox.width < collbox.height && this.boundingBox.getX() < otherBoundingBox.getX();
@@ -39,7 +38,53 @@ public class Ball extends Sprite {
 
             if (fromLeft || fromRight) this.xVelocity = xVelocity*-1;
             if (fromTop || fromBottom) this.yVelocity = yVelocity*-1;
+            return true;
+        }
+        return false;
+    }
 
+    public boolean collisionCheck(Bat batBoundingBox, Keyboard keyboard) {
+
+        if (batBoundingBox.boundingBox.intersects(this.boundingBox)) {
+            Rectangle collbox = batBoundingBox.boundingBox.intersection(this.boundingBox);
+
+            boolean ballRightIntersection = collbox.width < collbox.height && this.boundingBox.getX() < batBoundingBox.boundingBox.getX();
+            boolean ballLeftIntersection = collbox.width < collbox.height && this.boundingBox.getX() > batBoundingBox.boundingBox.getX();
+            boolean ballBottomIntersection = collbox.width > collbox.height && this.boundingBox.getY() < batBoundingBox.boundingBox.getY();
+            boolean ballTopIntersection = collbox.width > collbox.height && this.boundingBox.getY() > batBoundingBox.boundingBox.getY();
+
+            if (ballRightIntersection || ballLeftIntersection) {
+                if (xVelocity > 0) {
+                    xVelocity = (xVelocity + batBoundingBox.speed) * -1;
+                } else if (xVelocity < 0) {
+                    xVelocity = (xVelocity - batBoundingBox.speed) * -1;
+                }
+
+
+                if (ballRightIntersection && keyboard.isKeyDown(Key.Left)) {
+                    System.out.println("ball right coll ");
+                    this.setX(batBoundingBox.getX() - this.getWidth() - xVelocity);
+                }
+            }
+
+            if (ballLeftIntersection && keyboard.isKeyDown(Key.Right)) {
+                System.out.println("ball left coll ");
+                this.setX(batBoundingBox.getX() + getWidth() + xVelocity);
+            }
+
+
+
+            if (ballTopIntersection || ballBottomIntersection){
+                yVelocity = yVelocity*-1;
+
+                if (keyboard.isKeyDown(Key.Right)){
+                    xVelocity++;
+                }
+
+                if (keyboard.isKeyDown(Key.Left)){
+                    xVelocity--;
+                }
+            }
 
             return true;
         }

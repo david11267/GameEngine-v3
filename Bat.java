@@ -1,9 +1,10 @@
 import java.awt.*;
 
 public class Bat extends Wall {
-    int speed;
+    int speed = 10;
     String name;
     Rectangle boundingBox;
+
 
 
     public Bat(int x, int y, int width, int height) {
@@ -29,13 +30,13 @@ public class Bat extends Wall {
     public void update(Keyboard keyboard) {
 
 
+
         if (getX()<=775-getWidth()  && keyboard.isKeyDown(Key.Right)) {
-            this.setX(getX()+10);
-        }
+            this.setX(getX()+speed);}
 
         if (getX()>=25  && keyboard.isKeyDown(Key.Left)) {
-            this.setX(getX()-10);
-        }
+            this.setX(getX()-speed);}
+
 
         boundingBox.setLocation(getX(), getY());
     }

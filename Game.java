@@ -14,8 +14,8 @@ public class Game {
 
 
 	public Game(GameBoard board, Dimension dimension) {
-		player = new Player(dimension);
-		player.SpawnBalls(6);
+		player = new Player(dimension,5);
+		player.SpawnBalls(1,5);
 
 		int brickBoundery = (int)(dimension.getWidth()/3);
 		int brickAndSpaceWidth=brickBoundery/4;
@@ -33,23 +33,25 @@ public class Game {
 			for (Wall wall: walls){
 				ball.collisionCheck(wall.boundingBox);
 			}
-			ball.collisionCheck(player.bat.boundingBox);
+			ball.collisionCheck(player.bat, keyboard);
+				for (int i = 0; i <bricks.size() ; i++) {
+					boolean died = bricks.get(i).damageBrick(ball.collisionCheck(bricks.get(i).boundingBox));
+					if (died){
+						player.score += bricks.get(i).ScoreWorth;
+						 bricks.remove(bricks.get(i));
+					}
 
-			for (int i = 0; i <bricks.size() ; i++) {
-				boolean died = bricks.get(i).damageBrick(ball.collisionCheck(bricks.get(i).boundingBox));
-				if (died){
-					player.score += bricks.get(i).ScoreWorth;
-					 bricks.remove(bricks.get(i));
 				}
-
-			}
 		}
+	}
+
+	void GameOver( ){
+
 	}
 
 	public void update(Keyboard keyboard) {
 		player.bat.update(keyboard);
 		collisionChecks(keyboard);
-
 	}
 
 	public void draw(Graphics2D graphics) {
@@ -62,9 +64,11 @@ public class Game {
 			Ball currBall = player.balls.get(i);
 			currBall.draw(graphics);
 			if(currBall.outOfBounds())
-				player.balls.remove(currBall);
-
+				if (player.DestroyBallUntilGameOver(currBall))
+					GameOver();
 		}
+
+
 
 		for (Brick brick:bricks){
 			brick.draw(graphics);
