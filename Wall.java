@@ -10,7 +10,6 @@ public class Wall extends Sprite {
 
     @Override
     public void update(Keyboard keyboard) {
-
     }
 
     @Override

@@ -1,11 +1,10 @@
 import java.awt.*;
 
 public class Bat extends Wall {
-    int speed = 10;
+    int speed = 5;
     String name;
     Rectangle boundingBox;
-
-
+    private String getName(){return this.name;}
 
     public Bat(int x, int y, int width, int height) {
         super(x, y, width, height);
@@ -13,10 +12,6 @@ public class Bat extends Wall {
         this.name = "D";
         this.boundingBox = new Rectangle(x, y, width, height);
     }
-
-
-    private String getName(){return this.name;}
-
 
     @Override
     public void draw(Graphics2D graphics) {
@@ -28,16 +23,12 @@ public class Bat extends Wall {
 
     @Override
     public void update(Keyboard keyboard) {
-
-
-
         if (getX()<=775-getWidth()  && keyboard.isKeyDown(Key.Right)) {
-            this.setX(getX()+speed);}
-
+            this.setX(getX()+speed);
+        }
         if (getX()>=25  && keyboard.isKeyDown(Key.Left)) {
-            this.setX(getX()-speed);}
-
-
+            this.setX(getX()-speed);
+        }
         boundingBox.setLocation(getX(), getY());
     }
 }

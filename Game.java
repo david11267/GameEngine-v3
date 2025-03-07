@@ -15,7 +15,11 @@ public class Game {
 
 	public Game(GameBoard board, Dimension dimension) {
 		player = new Player(dimension,5);
-		player.SpawnBalls(1,5);
+		//player.SpawnBalls(1,5);
+
+		//testballs
+		player.balls.add(new Ball(dimension.width/2,dimension.height-25,3,0));
+		player.balls.add(new Ball(dimension.width/2,dimension.height/2,0,3));
 
 		int brickBoundery = (int)(dimension.getWidth()/3);
 		int brickAndSpaceWidth=brickBoundery/4;
@@ -30,9 +34,11 @@ public class Game {
 	void collisionChecks(Keyboard keyboard){
 		for (Ball ball: player.balls){
 			ball.update(keyboard);
+
 			for (Wall wall: walls){
 				ball.collisionCheck(wall.boundingBox);
 			}
+
 			ball.collisionCheck(player.bat, keyboard);
 				for (int i = 0; i <bricks.size() ; i++) {
 					boolean died = bricks.get(i).damageBrick(ball.collisionCheck(bricks.get(i).boundingBox));
@@ -40,18 +46,16 @@ public class Game {
 						player.score += bricks.get(i).ScoreWorth;
 						 bricks.remove(bricks.get(i));
 					}
-
 				}
 		}
 	}
 
-	void GameOver( ){
-
-	}
-
 	public void update(Keyboard keyboard) {
+		collisionChecks(keyboard);
 		player.bat.update(keyboard);
 		collisionChecks(keyboard);
+
+
 	}
 
 	public void draw(Graphics2D graphics) {
@@ -63,9 +67,6 @@ public class Game {
 		for (int i = 0; i <player.balls.size() ; i++) {
 			Ball currBall = player.balls.get(i);
 			currBall.draw(graphics);
-			if(currBall.outOfBounds())
-				if (player.DestroyBallUntilGameOver(currBall))
-					GameOver();
 		}
 
 
