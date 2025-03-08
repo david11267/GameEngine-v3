@@ -23,7 +23,7 @@ public class GameBoard extends JComponent {
 		Graphics2D graphics = (Graphics2D)arg0;
 		graphics.setColor(Color.black);
 		graphics.fillRect(0, 0, getWidth(), getHeight());
-		
+
 		game.draw(graphics);
 	}
 	
@@ -37,7 +37,7 @@ public class GameBoard extends JComponent {
 	}
 
 	public void start() {
-		while(true) {
+		while(!game.gameOver) {
 			game.update(keyboard);
 			try {
 				Thread.sleep(1000 / FPS); //Throttle thread

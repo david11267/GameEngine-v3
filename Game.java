@@ -11,15 +11,15 @@ public class Game {
 	));
 	Player player;
 	ArrayList<Brick>bricks= new ArrayList<Brick>();
-
+	GameBoard board;
+	boolean gameOver=false;
+	Dimension dimension;
 
 	public Game(GameBoard board, Dimension dimension) {
+		this.board = board;
 		player = new Player(dimension,5);
-		//player.SpawnBalls(1,5);
-
-		//testballs
-		player.balls.add(new Ball(dimension.width/2,dimension.height-25,3,0));
-		player.balls.add(new Ball(dimension.width/2,dimension.height/2,0,3));
+		player.SpawnBalls(1,4);
+		this.dimension = dimension;
 
 		int brickBoundery = (int)(dimension.getWidth()/3);
 		int brickAndSpaceWidth=brickBoundery/4;
@@ -32,28 +32,37 @@ public class Game {
 	}
 
 	void collisionChecks(Keyboard keyboard){
-		for (Ball ball: player.balls){
-			ball.update(keyboard);
+		for (int i = 0; i < player.balls.size() ; i++) {
+			player.balls.get(i).update(keyboard);
+			player.balls.get(i).collisionCheck(player.bat, keyboard);
 
 			for (Wall wall: walls){
-				ball.collisionCheck(wall.boundingBox);
+				player.balls.get(i).collisionCheck(wall.boundingBox);
 			}
 
-			ball.collisionCheck(player.bat, keyboard);
-				for (int i = 0; i <bricks.size() ; i++) {
-					boolean died = bricks.get(i).damageBrick(ball.collisionCheck(bricks.get(i).boundingBox));
-					if (died){
-						player.score += bricks.get(i).ScoreWorth;
-						 bricks.remove(bricks.get(i));
-					}
+			for (int y = 0; y <bricks.size() ; y++) {
+				boolean died = bricks.get(y).damageBrick(player.balls.get(i).collisionCheck(bricks.get(y).boundingBox));
+				if (died){
+					player.score += bricks.get(y).ScoreWorth;
+					bricks.remove(bricks.get(y));
 				}
+			}
+			if (player.balls.get(i).outOfBounds()){
+				if(player.DestroyBallUntilGameOver(player.balls.get(i))){
+					gameOver=true;
+				};
+
+			}
 		}
+
+
 	}
 
 	public void update(Keyboard keyboard) {
 		collisionChecks(keyboard);
 		player.bat.update(keyboard);
-		collisionChecks(keyboard);
+
+
 
 
 	}
@@ -69,10 +78,13 @@ public class Game {
 			currBall.draw(graphics);
 		}
 
-
-
 		for (Brick brick:bricks){
 			brick.draw(graphics);
+		}
+
+		if (gameOver){
+			graphics.setColor(Color.MAGENTA);
+			graphics.drawString("Game over",dimension.width/2,dimension.height/2);
 		}
 
 		player.drawScore(graphics);

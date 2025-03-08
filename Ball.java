@@ -79,6 +79,7 @@ public class Ball extends Sprite {
     @Override
     public void update(Keyboard keyboard) {
         move(xVelocity,yVelocity);
+
     }
 
     @Override

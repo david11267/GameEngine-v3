@@ -29,6 +29,7 @@ public class Bat extends Wall {
         if (getX()>=25  && keyboard.isKeyDown(Key.Left)) {
             this.setX(getX()-speed);
         }
+
         boundingBox.setLocation(getX(), getY());
     }
 }

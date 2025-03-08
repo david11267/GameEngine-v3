@@ -13,25 +13,7 @@ public class Player  {
         bat = new Bat(dimension.width/2-50,dimension.height-50,100,50);
          this.dimension = dimension; this.ballsLeft = totalBalls;
     }
-    public  void SpawnBalls(int amount){
-        Random rnd = new Random();
-        Timer timer = new Timer();
-        for (int i = 0; i <amount ; i++) {
 
-            timer.schedule(new TimerTask(){
-                @Override
-                public void run() {
-                    int xVel = rnd.nextInt(-3,3);
-                    int yVel =0;
-                    while(yVel==0){
-                        yVel=rnd.nextInt(-3,3);
-                    }
-
-                    balls.add(new Ball(300,400,xVel,yVel));
-                }
-            },1000*i);
-        }
-    }
     public  void SpawnBalls(int amount, int speed){
         Random rnd = new Random();
         Timer timer = new Timer();
