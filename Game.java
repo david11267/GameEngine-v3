@@ -51,8 +51,8 @@ public class Game {
 				if(player.DestroyBallUntilGameOver(player.balls.get(i))){
 					gameOver=true;
 				};
-
 			}
+			if (bricks.isEmpty()){gameOver=true;}
 		}
 
 
@@ -82,9 +82,15 @@ public class Game {
 			brick.draw(graphics);
 		}
 
-		if (gameOver){
+		if (gameOver && player.balls.isEmpty()){
 			graphics.setColor(Color.MAGENTA);
 			graphics.drawString("Game over",dimension.width/2,dimension.height/2);
+		}
+		else if(gameOver && !player.balls.isEmpty()){
+			graphics.setColor(Color.MAGENTA);
+			graphics.drawString("Game over",dimension.width/2,dimension.height/2);
+			graphics.drawString("Score: "+player.score,dimension.width/2,dimension.height/2+25);
+
 		}
 
 		player.drawScore(graphics);
